@@ -11,7 +11,7 @@ function drawButton() {
     ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 25, 100, 50);
     ctx.fillStyle = 'white';
     ctx.font = '20px Arial';
-    ctx.fillText('Click Me', canvas.width / 2 - 38, canvas.height / 2 + 8);
+    ctx.fillText('게임 시작', canvas.width / 2 - 42, canvas.height / 2 + 8);
 }
 
 let isGameStart = false;

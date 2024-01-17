@@ -31,23 +31,43 @@ class NoteManager {
         return this.key_count;
     }
 
-    add(note, index, time) {
+    add(index, time) {
         if (index === undefined) {
             console.error('NoteManager.add: idx is undefined');
         }
-        else if (index < 1 || index > 4) {
-            console.error('NoteManager.add: idx is out of range');
+        else if (typeof index === typeof 1) {
+            if (index < 1 || index > 4) {
+                console.error('NoteManager.add: idx is out of range');
+            } else {
+                let note = new Note();
+                note.x = 
+                (index - 1) * this.NOTE_LINE_WIDTH 
+                + (this.NOTE_LINE_WIDTH / 8);
+                note.y = -(this.judge_line_yPos * (this.speed - 1));
+                console.log("note.y : " + note.y);
+                this.time_tick += time;
+                note.time = this.time_tick;
+                note.judge_line_yPos = this.judge_line_yPos;
+                this.note_queue[index - 1].push(note);
+            }
         }
-        else {
-            note.x = 
-            (index - 1) * this.NOTE_LINE_WIDTH 
-            + (this.NOTE_LINE_WIDTH / 8);
-            note.y = -(this.judge_line_yPos * (this.speed - 1));
-            console.log("note.y : " + note.y);
-            this.time_tick += time;
-            note.time = this.time_tick;
-            note.judge_line_yPos = this.judge_line_yPos;
-            this.note_queue[index - 1].push(note);
+        else if (typeof index === typeof []) {
+            for (let i = 0; i < index.length; i++) {
+                if (index[i] < 1 || index[i] > 4) {
+                    console.error('NoteManager.add: idx is out of range');
+                } else {
+                    let note = new Note();
+                    note.x = 
+                    (index[i] - 1) * this.NOTE_LINE_WIDTH 
+                    + (this.NOTE_LINE_WIDTH / 8);
+                    note.y = -(this.judge_line_yPos * (this.speed - 1));
+                    console.log("note.y : " + note.y);
+                    this.time_tick += (i == 0 ? time : 0);
+                    note.time = this.time_tick;
+                    note.judge_line_yPos = this.judge_line_yPos;
+                    this.note_queue[index[i] - 1].push(note);
+                }
+            }
         }
     }
 
