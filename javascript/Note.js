@@ -6,6 +6,8 @@ class Note {
         this.x = 0;
         this.y = 0;
         this.time = 0;
+        this.default_speed = 0;
+        this.judge_line_yPos = 0;
         
         this.canvas = document.getElementById('canvas');
         this.ctx = this.canvas.getContext('2d');
@@ -29,6 +31,6 @@ class Note {
     }
 
     moveDown(speed) {
-        this.y += speed;
+        this.y += (this.judge_line_yPos / 60) * speed;
     }
 }

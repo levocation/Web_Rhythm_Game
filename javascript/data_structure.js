@@ -4,6 +4,10 @@ class Queue {
 
     }
 
+    get(idx) {
+        return this.queue[idx];
+    }
+
     push(element) {
         this.queue.push(element);
     }

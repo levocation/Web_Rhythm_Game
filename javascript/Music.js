@@ -11,11 +11,10 @@ class Music {
     }
 
     /** 초 단위 */
-    play(current_time = 0) {
-        this.audio.muted = true;
-        this.audio.currentTime = current_time;
+    play() {
+        console.log(this.audio.volume);
+        this.audio.volume = 0.1;
         this.audio.play();
-        this.audio.muted = false;
     }
 
     muted(is_muted) {

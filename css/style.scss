@@ -20,10 +20,15 @@ canvas {
     margin: 0 auto;
 
     background-color: green;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#time {
+    position: absolute;
+    right: 10%;
 }
 
 .game_canvas {

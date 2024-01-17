@@ -1,8 +1,25 @@
 class Game {
     constructor() {
 
-        this.noteManager = new NoteManager(4);
+        this.canvas = document.getElementById('canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.canvas.width = window.innerWidth - 1400;
+        this.canvas.height = window.innerHeight - 150;
+
+        this.game_delay = Math.floor(2000 / 60);
+        // test value
+        
+        this.music = new Music('M2U - Masquerade');
+
+        this.noteManager = 
+        new NoteManager(
+            /*line =*/ 4, 
+            /*game_delay =*/ this.game_delay,
+            /*judge_line_yPos =*/ (this.canvas.height - 100),
+            1
+            );
         this.isPressed = new Map();
+
 
         for (let i = 1; i <= this.noteManager.getKey_count(); i++) {
             this.isPressed.set('KEY_' + String(i), false);
@@ -10,11 +27,6 @@ class Game {
 
         this.note_line_image = new Image();
         this.note_line_image.src = 'img/note_line.png';
-
-        this.canvas = document.getElementById('canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.canvas.width = window.innerWidth - 1400;
-        this.canvas.height = window.innerHeight - 150;
 
         this.NOTE_LINE_WIDTH = this.canvas.width / 4;
         this.NOTE_LINE_HEIGHT = this.canvas.height;
@@ -30,18 +42,24 @@ class Game {
 
     start() {
         
-        this.noteManager.add(new Note(), 1);
-        this.noteManager.add(new Note(), 2);
-        this.noteManager.add(new Note(), 3);
-        this.noteManager.add(new Note(), 4);
+        let tempo = 56;
+        this.noteManager.add(new Note(), 1, 0);
+        this.noteManager.add(new Note(), 1, tempo);
+        this.noteManager.add(new Note(), 1, tempo);
+        this.noteManager.add(new Note(), 1, tempo);
 
-        let music = new Music('M2U - Masquerade');
-        //music.play();
+
+        setTimeout(() => {
+            this.music.play();
+        }, this.game_delay + ((this.canvas.height - 100) / 60));
         
         
-        //let intervalId = setInterval(this.start_game_animation_frame, 1000 / 60);
         this.start_game_animation_frame();
         
+    }
+
+    add_timeCount() {
+        this.noteManager.timeCount();
     }
     
     drawJudgeLine() {
@@ -51,6 +69,8 @@ class Game {
 
     start_game_animation_frame() {
         requestAnimationFrame(this.start_game_animation_frame);
+
+        document.getElementById('time').innerHTML = this.noteManager.time_count;
 
         // --- CLEAR CANVAS ---
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -86,13 +106,16 @@ class Game {
         this.drawJudgeLine();
 
         // --- DRAW NOTE ---
-        this.noteManager.draw(5);
+        this.noteManager.draw(1);
+
+        this.add_timeCount();
     }
 
     handleKeyDown(event) {
         if (event.key === 'd' || event.key === 'D') {
             this.isPressed.set('KEY_1', true);
-            this.noteManager.remove(1);
+            this.noteManager.judge(1);
+            console.log(this.noteManager.time_count);
         }
         if (event.key === 'f' || event.key === 'F') {
             this.isPressed.set('KEY_2', true);
